@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<project name="projectorControl" default="compile" basedir=".">
+    <property name="build.dir" value="build"/>
+    <property name="main.build.dir" value="${build.dir}/main"/>
+    <property name="main.src.dir" value="src"/>
+    <property name="test.build.dir" value="${build.dir}/test"/>
+    <property name="test.src.dir" value="test"/>
+    <property name="deploy.dir" value="deploy"/>
+    <property name="docs.dir" value="docs" />
+    <property name="main.libs" value="${main.src.dir}/libs" />
+    <property name="javac2.home" value="${idea.home.path}/lib" />
+
+
+    <path id="javac2.classpath">
+        <pathelement location="${main.libs}/javac2.jar" />
+        <pathelement location="${main.libs}/asm-5.0.3.jar" />
+        <pathelement location="${main.libs}/asm-all-4.0.jar" />
+        <pathelement location="${main.libs}/jdom-2.0.6.jar" />
+        <pathelement location="${main.libs}/asm-commons-3.3.jar" />
+        <pathelement location="${main.libs}/jgoodies-forms-1.9.0.jar" />
+    </path>
+
+    <path id="classpath.base">
+        <fileset dir="src/main/java/libs">
+            <include name="*.jar" />
+        </fileset>
+    </path>
+
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+        <delete dir="${docs.dir}" />
+    </target>
+
+    <target name="init" depends="clean">
+
+        <!-- Create the time stamp -->
+        <tstamp/>
+        <!-- Create the build directory structure used by compile -->
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${docs.dir}" />
+
+    </target>
+
+    <target name="compile" depends="init" description="compile the source">
+        <mkdir dir="${main.build.dir}"/>
+        <javac srcdir="${main.src.dir}" destdir="${main.build.dir}" includeantruntime="false">
+            <classpath refid="classpath.base"/>
+        </javac>
+        <echo message="build done"/>
+    </target>
+
+    <target name="jar" depends="compile">
+        <mkdir dir="build/jar" />
+        <jar destfile="build/jar/projector.jar" basedir="build/main">
+            <zipgroupfileset dir="src/main/java/libs" includes="*.jar" />
+            <manifest>
+                <attribute name="Main-Class" value="com.q2q.arsnova.projector.SendHTTPControls" />
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="docs" description="make javadocs">
+
+        <javadoc
+                destdir="docs/api"
+                author="true"
+                version="true"
+                use="true"
+                windowtitle="Projector API">
+            <fileset dir="src">
+
+            </fileset>
+
+        </javadoc>
+    </target>
+</project>
