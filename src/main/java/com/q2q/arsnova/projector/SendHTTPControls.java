@@ -21,14 +21,17 @@ public class SendHTTPControls {
 
     //Constants as defiened by projector interface
     private final String path = "/cgi-bin/pjctrl.cgi.elf/";
-    private final String turnOn  = path + "?D=%05%02%11%00%00%00";
-    private final String turnOff = path + "?D=%05%02%10%00%00%00";
+    private final String unmute  = path + "?D=%05%02%11%00%00%00";
+    private final String mute = path + "?D=%05%02%10%00%00%00";
+    private final String powerOff = path + "?D=%05%02%01%00%00%00";
     private static ArrayList<String> allProjectorNames;
 
-    private boolean isProjectorOn = false;
 
-
-
+    /**
+     * Main function creates the UI and sets up a socket for
+     * Isadora control
+     * @param args no launching arguments are used
+     */
     public static void main(String[] args) {
         JFrame frame = new MainView("Projector Controls");
         allProjectorNames = new ArrayList<String>();
@@ -42,28 +45,42 @@ public class SendHTTPControls {
 
     }
 
-    public void projectorOn(){
+    /**
+     * This function unmutes a muted projector.  In the event the projector
+     * is already unmuted, no visible change occurs.
+     */
+    public void unmuteProjector(){
         for(String projector: allProjectorNames){
-            sendMessage(projector + turnOn);
+            sendMessage(projector + unmute);
         }
     }
 
-    public void projectorOff(){
+    /**
+     * This function mutes an unmuted projector.  In the event the projector
+     * is already muted, no visible change occurs.
+     */
+    public void muteProjector(){
         for(String projector: allProjectorNames){
-            sendMessage(projector + turnOff);
+            sendMessage(projector + mute);
         }
     }
 
-    public void toggleProjector(){
-        if(isProjectorOn){
-            projectorOff();
-            isProjectorOn = false;
-        }else{
-            projectorOn();
-            isProjectorOn = true;
+    /**
+     * This function fully powers down the projector.  Projectors require
+     * a re-start time when turned off unlike muting/unmuting the projector
+     */
+    public void turnProjectorOff(){
+        for(String projector: allProjectorNames){
+            sendMessage(projector + powerOff);
         }
     }
 
+    /**
+     * This function creates a post request to the url passed to the function
+     * No data is passed in the request
+     * @param url the url to deliver the psot request to,
+     *            thereby triggering the event
+     */
     private void sendMessage(String url){
         //Code adapted from http://stackoverflow.com/questions/3324717/sending-http-post-request-in-java
         HttpClient httpclient = HttpClients.createDefault();
