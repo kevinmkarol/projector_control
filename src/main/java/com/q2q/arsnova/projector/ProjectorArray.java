@@ -5,7 +5,12 @@ import javax.swing.*;
 import java.util.ArrayList;
 
 /**
- * Created by Kevin on 3/5/15.
+ * Created by Kevin Karol on 3/5/15.
+ *
+ * This software is provided without warenty.
+ * If you wish to use this software for a theatrical production
+ * please contact its author first, and provide an appropriate credit
+ * in the show's playbill and other production billing.
  */
 public class ProjectorArray {
     //Values to be modified by users
@@ -15,6 +20,7 @@ public class ProjectorArray {
     private static String projectorNWIP = "http://169.254.7.223";
 
     private static ArrayList<Projector> allProjectors;
+    private static Object arrayLock = new Object();
 
     /**
      * Main function creates the UI and sets up a socket for
@@ -23,11 +29,7 @@ public class ProjectorArray {
      */
     public static void main(String[] args) {
         JFrame frame = new MainView("Projector Controls");
-        allProjectors = new ArrayList<Projector>();
-        allProjectors.add(new Projector(projectorNEIP));
-        allProjectors.add(new Projector(projectorNWIP));
-        allProjectors.add(new Projector(projectorSEIP));
-        allProjectors.add(new Projector(projectorSWIP));
+        createProjectorArray();
 
         //Setup Isadora Socket
         (new IsadoraSocket()).start();
@@ -38,10 +40,13 @@ public class ProjectorArray {
      * This function unmutes a muted projector.  In the event the projector
      * is already unmuted, no visible change occurs.
      */
-    public void unmuteProjectors(){
-        for(Projector p: allProjectors){
-            p.setCurrentState(ProjectorStates.UNMUTE);
-            p.start();
+    public static void unmuteProjectors(){
+        synchronized (arrayLock) {
+            for (Projector p : allProjectors) {
+                p.setCurrentState(ProjectorStates.UNMUTE);
+                p.start();
+            }
+            createProjectorArray();
         }
     }
 
@@ -49,10 +54,13 @@ public class ProjectorArray {
      * This function mutes an unmuted projector.  In the event the projector
      * is already muted, no visible change occurs.
      */
-    public void muteProjectors(){
-        for(Projector p: allProjectors){
-            p.setCurrentState(ProjectorStates.MUTE);
-            p.start();
+    public static void muteProjectors(){
+        synchronized (arrayLock) {
+            for (Projector p : allProjectors) {
+                p.setCurrentState(ProjectorStates.MUTE);
+                p.start();
+            }
+            createProjectorArray();
         }
     }
 
@@ -60,10 +68,13 @@ public class ProjectorArray {
      * This function powers on the projector.  Projectors require
      * a re-start time when turned off and on unlike muting/unmuting the projector
      */
-    public void turnProjectorsOn(){
-        for(Projector p: allProjectors){
-            p.setCurrentState(ProjectorStates.ON);
-            p.start();
+    public static void turnProjectorsOn(){
+        synchronized (arrayLock) {
+            for (Projector p : allProjectors) {
+                p.setCurrentState(ProjectorStates.ON);
+                p.start();
+            }
+            createProjectorArray();
         }
     }
 
@@ -71,10 +82,21 @@ public class ProjectorArray {
      * This function fully powers down the projector.  Projectors require
      * a re-start time when turned off and on unlike muting/unmuting the projector
      */
-    public void turnProjectorsOff(){
-        for(Projector p: allProjectors){
-            p.setCurrentState(ProjectorStates.OFF);
-            p.start();
+    public static void turnProjectorsOff(){
+        synchronized (arrayLock) {
+            for (Projector p : allProjectors) {
+                p.setCurrentState(ProjectorStates.OFF);
+                p.start();
+            }
+            createProjectorArray();
         }
+    }
+
+    private static void createProjectorArray(){
+        allProjectors = new ArrayList<Projector>();
+        allProjectors.add(new Projector(projectorNEIP));
+        allProjectors.add(new Projector(projectorNWIP));
+        allProjectors.add(new Projector(projectorSEIP));
+        allProjectors.add(new Projector(projectorSWIP));
     }
 }

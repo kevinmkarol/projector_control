@@ -7,7 +7,12 @@ import org.apache.http.impl.client.HttpClients;
 import java.io.IOException;
 
 /**
- * Created by Kevin on 3/6/15.
+ * Created by Kevin Karol on 3/6/15.
+ *
+ * This software is provided without warenty.
+ * If you wish to use this software for a theatrical production
+ * please contact its author first, and provide an appropriate credit
+ * in the show's playbill and other production billing.
  */
 public class Projector extends Thread {
     private final String IPAddress;

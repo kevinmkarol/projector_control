@@ -6,7 +6,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Created by Kevin on 3/5/15.
+ * Created by Kevin Karol on 3/5/15.
+ *
+ * This software is provided without warenty.
+ * If you wish to use this software for a theatrical production
+ * please contact its author first, and provide an appropriate credit
+ * in the show's playbill and other production billing.
  */
 public class MainView extends JFrame{
     private JRadioButton unmute = new JRadioButton("Unmute Projector");
@@ -14,7 +19,6 @@ public class MainView extends JFrame{
     private Button turnOff = new Button("Projector Off");
     private Button turnOn = new Button("Projector On");
     private ButtonGroup radios = new ButtonGroup();
-    private ProjectorArray control = new ProjectorArray();
 
     /**
      * Construct the UI for major projector controls
@@ -34,26 +38,26 @@ public class MainView extends JFrame{
         unmute.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                control.unmuteProjectors();
+                ProjectorArray.unmuteProjectors();
             }
         });
         mute.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                control.muteProjectors();
+                ProjectorArray.muteProjectors();
             }
         });
         turnOff.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                control.turnProjectorsOff();
+                ProjectorArray.turnProjectorsOff();
             }
         });
 
         turnOn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                control.turnProjectorsOn();
+                ProjectorArray.turnProjectorsOn();
             }
         });
 

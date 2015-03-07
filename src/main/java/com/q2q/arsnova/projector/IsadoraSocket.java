@@ -7,7 +7,12 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
- * Created by Kevin on 3/5/15.
+ * Created by Kevin Karol Karol on 3/5/15.
+ *
+ * This software is provided without warenty.
+ * If you wish to use this software for a theatrical production
+ * please contact its author first, and provide an appropriate credit
+ * in the show's playbill and other production billing.
  */
 public class IsadoraSocket extends Thread {
     //Using single character encoding due to limited necessary functionality
@@ -17,7 +22,6 @@ public class IsadoraSocket extends Thread {
     private final int unmuteProjector = 'u';
     private final int projectorOff = 'o';
     private final int projectorOn = 'i';
-    private final ProjectorArray controls = new ProjectorArray();
 
     /**
      * Extension of Thread's run function which allows this code to
@@ -37,16 +41,16 @@ public class IsadoraSocket extends Thread {
             while((compareCall = in.read()) != -1){
                 switch(compareCall){
                     case(muteProjector):
-                        controls.muteProjectors();
+                        ProjectorArray.muteProjectors();
                         break;
                     case(unmuteProjector):
-                        controls.unmuteProjectors();
+                        ProjectorArray.unmuteProjectors();
                         break;
                     case(projectorOff):
-                        controls.turnProjectorsOff();
+                        ProjectorArray.turnProjectorsOff();
                         break;
                     case(projectorOn):
-                        controls.turnProjectorsOn();
+                        ProjectorArray.turnProjectorsOn();
                         break;
                     default:
                         break;
