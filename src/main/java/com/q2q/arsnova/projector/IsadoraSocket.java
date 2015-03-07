@@ -16,7 +16,8 @@ public class IsadoraSocket extends Thread {
     private final int muteProjector = 'm';
     private final int unmuteProjector = 'u';
     private final int projectorOff = 'o';
-    private final SendHTTPControls controls = new SendHTTPControls();
+    private final int projectorOn = 'i';
+    private final ProjectorArray controls = new ProjectorArray();
 
     /**
      * Extension of Thread's run function which allows this code to
@@ -36,13 +37,16 @@ public class IsadoraSocket extends Thread {
             while((compareCall = in.read()) != -1){
                 switch(compareCall){
                     case(muteProjector):
-                        controls.muteProjector();
+                        controls.muteProjectors();
                         break;
                     case(unmuteProjector):
-                        controls.unmuteProjector();
+                        controls.unmuteProjectors();
                         break;
                     case(projectorOff):
-                        controls.turnProjectorOff();
+                        controls.turnProjectorsOff();
+                        break;
+                    case(projectorOn):
+                        controls.turnProjectorsOn();
                         break;
                     default:
                         break;

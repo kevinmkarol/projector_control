@@ -12,8 +12,9 @@ public class MainView extends JFrame{
     private JRadioButton unmute = new JRadioButton("Unmute Projector");
     private JRadioButton mute = new JRadioButton("Mute Projector");
     private Button turnOff = new Button("Projector Off");
+    private Button turnOn = new Button("Projector On");
     private ButtonGroup radios = new ButtonGroup();
-    private SendHTTPControls control = new SendHTTPControls();
+    private ProjectorArray control = new ProjectorArray();
 
     /**
      * Construct the UI for major projector controls
@@ -33,25 +34,33 @@ public class MainView extends JFrame{
         unmute.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                control.unmuteProjector();
+                control.unmuteProjectors();
             }
         });
         mute.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                control.muteProjector();
+                control.muteProjectors();
             }
         });
         turnOff.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                control.turnProjectorOff();
+                control.turnProjectorsOff();
+            }
+        });
+
+        turnOn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                control.turnProjectorsOn();
             }
         });
 
         //Add UI elements to display
         getContentPane().add(unmute);
         getContentPane().add(mute);
+        getContentPane().add(turnOn);
         getContentPane().add(turnOff);
 
         pack();
